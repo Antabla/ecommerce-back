@@ -22,23 +22,23 @@ export class CreateOrderUseCase {
     let total = 0;
     let stockEvents: Product[] = []; 
 
-    orderItems.forEach(async(item) => {
-        total += item.price * item.quantity;
-        const product = await this.productRepo.findById(item.productId);
+    for await (const item of orderItems) {
+      total += item.price * item.quantity;
+      const product = await this.productRepo.findById(item.productId);
 
-        if (!product) {
-          throw new ProductNotFoundError();
-        }
+      if (!product) {
+        throw new ProductNotFoundError();
+      }
     
-        if (product.stock < item.quantity) {
-          throw new ProductOutStockError();
-        }
+      if (product.stock < item.quantity) {
+        throw new ProductOutStockError();
+      }
     
-        product.stock -= item.quantity;
-        await this.productRepo.update(item.productId, product);
- 
-        stockEvents.push(product);
-    })
+      product.stock -= item.quantity;
+      await this.productRepo.update(item.productId, product);
+   
+      stockEvents.push(product);
+    }
 
     const newOrder = new Order(
       0,

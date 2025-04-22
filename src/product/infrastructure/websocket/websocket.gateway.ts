@@ -1,9 +1,13 @@
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { Product } from 'src/product/domain/entities/product.entity';
-import { ProductEventPort } from '../../../product/domain/repositories/product-event.port';
+import { ProductEventPort } from '../../domain/repositories/product-event.port';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: '*',
+  },
+})
 export class WebsocketGateway implements ProductEventPort {
   @WebSocketServer()
   server: Server;

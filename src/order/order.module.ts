@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderOrmEntity } from './infrastructure/persistence/typeorm/order.orm-entity';
 import { OrderRepositoryImpl } from './infrastructure/persistence/typeorm/order.repository';
 import { OrderController } from './infrastructure/api/controller/order.controller';
-import { WebsocketGateway } from './infrastructure/websocket/websocket.gateway';
+import { WebsocketGateway } from '../product/infrastructure/websocket/websocket.gateway';
 import { CreateOrderUseCase } from './application/create-order.usecase';
 import { FindOrdersUseCase } from './application/find-orders.usecase';
 import { OrderItemOrmEntity } from './infrastructure/persistence/typeorm/order-item.orm-entity';
@@ -26,7 +26,7 @@ import { ProductOrmEntity } from 'src/product/infrastructure/persistence/typeorm
     WebsocketGateway,
     ProductRepositoryImpl,
     { provide: 'OrderRepository', useExisting: OrderRepositoryImpl },
-    { provide: 'OrderEventPort', useExisting: WebsocketGateway },
+    { provide: 'ProductEventPort', useExisting: WebsocketGateway },
     { provide: 'ProductRepository', useExisting: ProductRepositoryImpl },
     {
       provide: CreateOrderUseCase,
